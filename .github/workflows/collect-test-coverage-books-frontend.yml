@@ -24,11 +24,30 @@ jobs:
     name: 'Collect Test Coverage'
     if: startsWith(github.head_ref, 'feature/') && contains(github.event.pull_request.labels.*.name, 'test')
     runs-on: ubuntu-latest
+    outputs:
+      output1: ${{ steps.step1.outputs.test }}
     steps:
-    - uses: actions/checkout@v3
-    - name: Use Node.js ${{ env.NODE_VERSION }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ env.NODE_VERSION }}
-    - run: yarn install
-    - run: yarn test
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - run: yarn install
+      - run: yarn test
+      - id: step1
+        run: echo "test=$(cat coverage/coverage-summary.json | jq '.total.lines.pct')" >> $GITHUB_OUTPUT
+  update-pr-description:
+    name: 'Update PR Description'
+    needs: collect-test-coverage
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v6
+        with:
+          result-encoding: string
+          script: |
+            github.rest.pulls.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number,
+              body: ${{needs.collect-test-coverage.outputs.output1}},
+            })
