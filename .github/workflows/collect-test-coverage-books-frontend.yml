@@ -47,6 +47,9 @@ jobs:
         with:
           ref: ${{ github.base_ref }}
 
+      - name: Install Dependencies
+        run: yarn install
+
       - name: Run Test Code On Base Branch
         run: yarn test
 
