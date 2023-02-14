@@ -64,7 +64,7 @@ jobs:
         with:
           result-encoding: string
           script: |
-            const increase-ratio = current-coverage - base-coverage;
+            const increase-ratio = 5 - 1;
 
             github.rest.pulls.update({
               owner: context.repo.owner,
