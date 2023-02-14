@@ -15,9 +15,9 @@ on:
 env:
   NODE_VERSION: 18
 
-defaults:
-  run:
-    working-directory: ''
+# defaults:
+#   run:
+#     working-directory: ''
 
 jobs:
   collect-test-coverage:
