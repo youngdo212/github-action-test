@@ -40,18 +40,18 @@ jobs:
 
       - name: Save Current Test Coverage
         id: current
-        run: echo "statements_total=$(cat coverage/coverage-summary.json | jq '.total.statements.total')" >> $GITHUB_OUTPUT
-        run: echo "statements_covered=$(cat coverage/coverage-summary.json | jq '.total.statements.covered')" >> $GITHUB_OUTPUT
-        run: echo "statements_pct=$(cat coverage/coverage-summary.json | jq '.total.statements.pct')" >> $GITHUB_OUTPUT
-        run: echo "branches_total=$(cat coverage/coverage-summary.json | jq '.total.branches.total')" >> $GITHUB_OUTPUT
-        run: echo "branches_covered=$(cat coverage/coverage-summary.json | jq '.total.branches.covered')" >> $GITHUB_OUTPUT
-        run: echo "branches_pct=$(cat coverage/coverage-summary.json | jq '.total.branches.pct')" >> $GITHUB_OUTPUT
-        run: echo "functions_total=$(cat coverage/coverage-summary.json | jq '.total.functions.total')" >> $GITHUB_OUTPUT
-        run: echo "functions_covered=$(cat coverage/coverage-summary.json | jq '.total.functions.covered')" >> $GITHUB_OUTPUT
-        run: echo "functions_pct=$(cat coverage/coverage-summary.json | jq '.total.functions.pct')" >> $GITHUB_OUTPUT
-        run: echo "lines_total=$(cat coverage/coverage-summary.json | jq '.total.lines.total')" >> $GITHUB_OUTPUT
-        run: echo "lines_covered=$(cat coverage/coverage-summary.json | jq '.total.lines.covered')" >> $GITHUB_OUTPUT
-        run: echo "lines_pct=$(cat coverage/coverage-summary.json | jq '.total.lines.pct')" >> $GITHUB_OUTPUT
+        run: echo "statements_total=$(cat coverage/coverage-summary.json | jq '.total.statements.total')" >> $GITHUB_OUTPUT \n
+          echo "statements_covered=$(cat coverage/coverage-summary.json | jq '.total.statements.covered')" >> $GITHUB_OUTPUT \n
+          echo "statements_pct=$(cat coverage/coverage-summary.json | jq '.total.statements.pct')" >> $GITHUB_OUTPUT \n
+          echo "branches_total=$(cat coverage/coverage-summary.json | jq '.total.branches.total')" >> $GITHUB_OUTPUT \n
+          echo "branches_covered=$(cat coverage/coverage-summary.json | jq '.total.branches.covered')" >> $GITHUB_OUTPUT \n
+          echo "branches_pct=$(cat coverage/coverage-summary.json | jq '.total.branches.pct')" >> $GITHUB_OUTPUT \n
+          echo "functions_total=$(cat coverage/coverage-summary.json | jq '.total.functions.total')" >> $GITHUB_OUTPUT \n
+          echo "functions_covered=$(cat coverage/coverage-summary.json | jq '.total.functions.covered')" >> $GITHUB_OUTPUT \n
+          echo "functions_pct=$(cat coverage/coverage-summary.json | jq '.total.functions.pct')" >> $GITHUB_OUTPUT \n
+          echo "lines_total=$(cat coverage/coverage-summary.json | jq '.total.lines.total')" >> $GITHUB_OUTPUT \n
+          echo "lines_covered=$(cat coverage/coverage-summary.json | jq '.total.lines.covered')" >> $GITHUB_OUTPUT \n
+          echo "lines_pct=$(cat coverage/coverage-summary.json | jq '.total.lines.pct')" >> $GITHUB_OUTPUT
 
       - name: Checkout Base Branch
         uses: actions/checkout@v3
@@ -66,18 +66,18 @@ jobs:
 
       - name: Save Base Test Coverage
         id: base
-        run: echo "statements_total=$(cat coverage/coverage-summary.json | jq '.total.statements.total')" >> $GITHUB_OUTPUT
-        run: echo "statements_covered=$(cat coverage/coverage-summary.json | jq '.total.statements.covered')" >> $GITHUB_OUTPUT
-        run: echo "statements_pct=$(cat coverage/coverage-summary.json | jq '.total.statements.pct')" >> $GITHUB_OUTPUT
-        run: echo "branches_total=$(cat coverage/coverage-summary.json | jq '.total.branches.total')" >> $GITHUB_OUTPUT
-        run: echo "branches_covered=$(cat coverage/coverage-summary.json | jq '.total.branches.covered')" >> $GITHUB_OUTPUT
-        run: echo "branches_pct=$(cat coverage/coverage-summary.json | jq '.total.branches.pct')" >> $GITHUB_OUTPUT
-        run: echo "functions_total=$(cat coverage/coverage-summary.json | jq '.total.functions.total')" >> $GITHUB_OUTPUT
-        run: echo "functions_covered=$(cat coverage/coverage-summary.json | jq '.total.functions.covered')" >> $GITHUB_OUTPUT
-        run: echo "functions_pct=$(cat coverage/coverage-summary.json | jq '.total.functions.pct')" >> $GITHUB_OUTPUT
-        run: echo "lines_total=$(cat coverage/coverage-summary.json | jq '.total.lines.total')" >> $GITHUB_OUTPUT
-        run: echo "lines_covered=$(cat coverage/coverage-summary.json | jq '.total.lines.covered')" >> $GITHUB_OUTPUT
-        run: echo "lines_pct=$(cat coverage/coverage-summary.json | jq '.total.lines.pct')" >> $GITHUB_OUTPUT
+        run: echo "statements_total=$(cat coverage/coverage-summary.json | jq '.total.statements.total')" >> $GITHUB_OUTPUT \n
+          echo "statements_covered=$(cat coverage/coverage-summary.json | jq '.total.statements.covered')" >> $GITHUB_OUTPUT \n
+          echo "statements_pct=$(cat coverage/coverage-summary.json | jq '.total.statements.pct')" >> $GITHUB_OUTPUT \n
+          echo "branches_total=$(cat coverage/coverage-summary.json | jq '.total.branches.total')" >> $GITHUB_OUTPUT \n
+          echo "branches_covered=$(cat coverage/coverage-summary.json | jq '.total.branches.covered')" >> $GITHUB_OUTPUT \n
+          echo "branches_pct=$(cat coverage/coverage-summary.json | jq '.total.branches.pct')" >> $GITHUB_OUTPUT \n
+          echo "functions_total=$(cat coverage/coverage-summary.json | jq '.total.functions.total')" >> $GITHUB_OUTPUT \n
+          echo "functions_covered=$(cat coverage/coverage-summary.json | jq '.total.functions.covered')" >> $GITHUB_OUTPUT \n
+          echo "functions_pct=$(cat coverage/coverage-summary.json | jq '.total.functions.pct')" >> $GITHUB_OUTPUT \n
+          echo "lines_total=$(cat coverage/coverage-summary.json | jq '.total.lines.total')" >> $GITHUB_OUTPUT \n
+          echo "lines_covered=$(cat coverage/coverage-summary.json | jq '.total.lines.covered')" >> $GITHUB_OUTPUT \n
+          echo "lines_pct=$(cat coverage/coverage-summary.json | jq '.total.lines.pct')" >> $GITHUB_OUTPUT
 
       - name: Update PR Description
         uses: actions/github-script@v6
