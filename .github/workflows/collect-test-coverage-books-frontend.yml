@@ -26,15 +26,34 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+
       - name: Use Node.js ${{ env.NODE_VERSION }}
         uses: actions/setup-node@v3
         with:
           node-version: ${{ env.NODE_VERSION }}
-      - run: yarn install
+
+      - name: Run Test Code On Current Branch
+        run: yarn install
+        run: yarn test
+
+      - name: Save Current Test Coverage
+        id: current
+        run: echo "total_line=$(cat coverage/coverage-summary.json | jq '.total.lines.total')" >> $GITHUB_OUTPUT
+
+      - name: Checkout Base Branch
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.base_ref }}
+
+      - name: Run Test Code On Base Branch
       - run: yarn test
-      - id: step1
-        run: echo "test=$(cat coverage/coverage-summary.json | jq '.total.lines.total')" >> $GITHUB_OUTPUT
-      - uses: actions/github-script@v6
+
+      - name: Save Base Test Coverage
+        id: base
+        run: echo "total_line=$(cat coverage/coverage-summary.json | jq '.total.lines.total')" >> $GITHUB_OUTPUT
+
+      - name: Update PR Description
+        uses: actions/github-script@v6
         with:
           result-encoding: string
           script: |
@@ -42,5 +61,5 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               pull_number: context.issue.number,
-              body: '${{ steps.step1.outputs.test }}',
+              body: '${{ steps.base.outputs.total_line }} -> ${{ steps.current.outputs.total_line }}',
             })
