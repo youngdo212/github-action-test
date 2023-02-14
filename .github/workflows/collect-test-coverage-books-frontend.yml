@@ -49,6 +49,6 @@ jobs:
             github.rest.pulls.update({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              pull_number: context.pulls.number,
+              pull_number: context.issue.number,
               body: ${{needs.collect-test-coverage.outputs.output1}},
             })
