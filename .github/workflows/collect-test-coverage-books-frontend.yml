@@ -104,25 +104,23 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               pull_number: context.issue.number,
-              body: `
-                ${ base_coverage } -> ${ current_coverage }(${ increase_ratio }% 상승)\n\n
-                수정 전: ${ base_coverage }%\n
-                \`\`\`\n
-                =============================== Coverage summary ===============================\n
-                Statements   : ${{ steps.base.outputs.statements_pct }}% ( ${{ steps.base.outputs.statements_covered }}/${{ steps.base.outputs.statements_total }} )\n
-                Branches     : ${{ steps.base.outputs.branches_pct }}% ( ${{ steps.base.outputs.branches_covered }}/${{ steps.base.outputs.branches_total }} )\n
-                Functions    : ${{ steps.base.outputs.functions_pct }}% ( ${{ steps.base.outputs.functions_covered }}/${{ steps.base.outputs.functions_total }} )\n
-                Lines        : ${{ steps.base.outputs.lines_pct }}% ( ${{ steps.base.outputs.lines_covered }}/${{ steps.base.outputs.lines_total }} )\n
-                ================================================================================\n
-                \`\`\`\n\n
-                수정 후: ${ current_coverage }%\n
-                \`\`\`\n
-                =============================== Coverage summary ===============================\n
-                Statements   : ${{ steps.current.outputs.statements_pct }}% ( ${{ steps.current.outputs.statements_covered }}/${{ steps.current.outputs.statements_total }} )\n
-                Branches     : ${{ steps.current.outputs.branches_pct }}% ( ${{ steps.current.outputs.branches_covered }}/${{ steps.current.outputs.branches_total }} )\n
-                Functions    : ${{ steps.current.outputs.functions_pct }}% ( ${{ steps.current.outputs.functions_covered }}/${{ steps.current.outputs.functions_total }} )\n
-                Lines        : ${{ steps.current.outputs.lines_pct }}% ( ${{ steps.current.outputs.lines_covered }}/${{ steps.current.outputs.lines_total }} )\n
-                ================================================================================\n
-                \`\`\`\n
-              `.trim(),
+              body: `${ base_coverage }% -> ${ current_coverage }%(**${ increase_ratio }% 상승**)\n\n` + 
+                `수정 전: ${ base_coverage }%\n` + 
+                `\`\`\`\n` + 
+                `=============================== Coverage summary ===============================\n` +
+                `Statements   : ${{ steps.base.outputs.statements_pct }}% ( ${{ steps.base.outputs.statements_covered }}/${{ steps.base.outputs.statements_total }} )\n` +
+                `Branches     : ${{ steps.base.outputs.branches_pct }}% ( ${{ steps.base.outputs.branches_covered }}/${{ steps.base.outputs.branches_total }} )\n` +
+                `Functions    : ${{ steps.base.outputs.functions_pct }}% ( ${{ steps.base.outputs.functions_covered }}/${{ steps.base.outputs.functions_total }} )\n` +
+                `Lines        : ${{ steps.base.outputs.lines_pct }}% ( ${{ steps.base.outputs.lines_covered }}/${{ steps.base.outputs.lines_total }} )\n` +
+                `================================================================================\n` +
+                `\`\`\`\n\n` +
+                `수정 후: ${ current_coverage }%\n` +
+                `\`\`\`\n` +
+                `=============================== Coverage summary ===============================\n` +
+                `Statements   : ${{ steps.current.outputs.statements_pct }}% ( ${{ steps.current.outputs.statements_covered }}/${{ steps.current.outputs.statements_total }} )\n` +
+                `Branches     : ${{ steps.current.outputs.branches_pct }}% ( ${{ steps.current.outputs.branches_covered }}/${{ steps.current.outputs.branches_total }} )\n` +
+                `Functions    : ${{ steps.current.outputs.functions_pct }}% ( ${{ steps.current.outputs.functions_covered }}/${{ steps.current.outputs.functions_total }} )\n` +
+                `Lines        : ${{ steps.current.outputs.lines_pct }}% ( ${{ steps.current.outputs.lines_covered }}/${{ steps.current.outputs.lines_total }} )\n` +
+                `================================================================================\n` +
+                `\`\`\`,
             })
