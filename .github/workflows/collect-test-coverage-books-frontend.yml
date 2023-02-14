@@ -86,28 +86,28 @@ jobs:
         with:
           result-encoding: string
           script: |
-            const base-coverage = (
+            const base_coverage = (
               ${{ steps.base.outputs.statements_pct }} +
               ${{ steps.base.outputs.branches_pct }} +
               ${{ steps.base.outputs.functions_pct }} +
               ${{ steps.base.outputs.lines_pct }}
             ) / 4
-            const current-coverage = (
+            const current_coverage = (
               ${{ steps.current.outputs.statements_pct }} +
               ${{ steps.current.outputs.branches_pct }} +
               ${{ steps.current.outputs.functions_pct }} +
               ${{ steps.current.outputs.lines_pct }}
             ) / 4
-            const increase-ratio = current-coverage - base-coverage;
+            const increase_ratio = current_coverage - base_coverage;
 
             github.rest.pulls.update({
               owner: context.repo.owner,
               repo: context.repo.repo,
               pull_number: context.issue.number,
               body: `
-                ${ base-coverage } -> ${ current-coverage }(${ increase-ratio }% 상승)\n\n
+                ${ base_coverage } -> ${ current_coverage }(${ increase_ratio }% 상승)\n\n
 
-                수정 전: ${ base-coverage }&\n
+                수정 전: ${ base_coverage }&\n
                 ```\n
                 =============================== Coverage summary ===============================\n
                 Statements   : ${{ steps.base.outputs.statements_pct }}% ( ${{ steps.base.outputs.statements_covered }}/${{ steps.base.outputs.statements_total }} )\n
@@ -117,7 +117,7 @@ jobs:
                 ================================================================================\n
                 ```\n\n
 
-                수정 후: ${ current-coverage }&\n
+                수정 후: ${ current_coverage }&\n
                 ```\n
                 =============================== Coverage summary ===============================\n
                 Statements   : ${{ steps.current.outputs.statements_pct }}% ( ${{ steps.current.outputs.statements_covered }}/${{ steps.current.outputs.statements_total }} )\n
