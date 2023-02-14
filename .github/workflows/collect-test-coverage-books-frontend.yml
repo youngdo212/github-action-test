@@ -1,0 +1,34 @@
+name: 'Collect Test Coverage books-frontend'
+
+on:
+  pull_request:
+    types:
+      - opened
+      - labeled
+      - synchronize
+      - reopened
+    branches:
+      - main
+    paths:
+      - 'src/**'
+
+env:
+  NODE_VERSION: 18
+
+defaults:
+  run:
+    working-directory: ''
+
+jobs:
+  collect-test-coverage:
+    name: 'Collect Test Coverage'
+    if: startsWith(github.head_ref, 'feature/') && contains(github.event.pull_request.labels.*.name, 'test')
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Use Node.js ${{ env.NODE_VERSION }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+    - run: yarn install
+    - run: yarn test
