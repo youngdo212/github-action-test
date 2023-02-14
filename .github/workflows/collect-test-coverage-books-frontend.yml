@@ -42,6 +42,17 @@ jobs:
         id: current
         run: |
           echo "statements_total=$(cat coverage/coverage-summary.json | jq '.total.statements.total')" >> $GITHUB_OUTPUT
+          echo "statements_covered=$(cat coverage/coverage-summary.json | jq '.total.statements.covered')" >> $GITHUB_OUTPUT
+          echo "statements_pct=$(cat coverage/coverage-summary.json | jq '.total.statements.pct')" >> $GITHUB_OUTPUT
+          echo "branches_total=$(cat coverage/coverage-summary.json | jq '.total.branches.total')" >> $GITHUB_OUTPUT
+          echo "branches_covered=$(cat coverage/coverage-summary.json | jq '.total.branches.covered')" >> $GITHUB_OUTPUT
+          echo "branches_pct=$(cat coverage/coverage-summary.json | jq '.total.branches.pct')" >> $GITHUB_OUTPUT
+          echo "functions_total=$(cat coverage/coverage-summary.json | jq '.total.functions.total')" >> $GITHUB_OUTPUT
+          echo "functions_covered=$(cat coverage/coverage-summary.json | jq '.total.functions.covered')" >> $GITHUB_OUTPUT
+          echo "functions_pct=$(cat coverage/coverage-summary.json | jq '.total.functions.pct')" >> $GITHUB_OUTPUT
+          echo "lines_total=$(cat coverage/coverage-summary.json | jq '.total.lines.total')" >> $GITHUB_OUTPUT
+          echo "lines_covered=$(cat coverage/coverage-summary.json | jq '.total.lines.covered')" >> $GITHUB_OUTPUT
+          echo "lines_pct=$(cat coverage/coverage-summary.json | jq '.total.lines.pct')" >> $GITHUB_OUTPUT
 
       - name: Checkout Base Branch
         uses: actions/checkout@v3
@@ -58,22 +69,45 @@ jobs:
         id: base
         run: |
           echo "statements_total=$(cat coverage/coverage-summary.json | jq '.total.statements.total')" >> $GITHUB_OUTPUT
+          echo "statements_covered=$(cat coverage/coverage-summary.json | jq '.total.statements.covered')" >> $GITHUB_OUTPUT
+          echo "statements_pct=$(cat coverage/coverage-summary.json | jq '.total.statements.pct')" >> $GITHUB_OUTPUT
+          echo "branches_total=$(cat coverage/coverage-summary.json | jq '.total.branches.total')" >> $GITHUB_OUTPUT
+          echo "branches_covered=$(cat coverage/coverage-summary.json | jq '.total.branches.covered')" >> $GITHUB_OUTPUT
+          echo "branches_pct=$(cat coverage/coverage-summary.json | jq '.total.branches.pct')" >> $GITHUB_OUTPUT
+          echo "functions_total=$(cat coverage/coverage-summary.json | jq '.total.functions.total')" >> $GITHUB_OUTPUT
+          echo "functions_covered=$(cat coverage/coverage-summary.json | jq '.total.functions.covered')" >> $GITHUB_OUTPUT
+          echo "functions_pct=$(cat coverage/coverage-summary.json | jq '.total.functions.pct')" >> $GITHUB_OUTPUT
+          echo "lines_total=$(cat coverage/coverage-summary.json | jq '.total.lines.total')" >> $GITHUB_OUTPUT
+          echo "lines_covered=$(cat coverage/coverage-summary.json | jq '.total.lines.covered')" >> $GITHUB_OUTPUT
+          echo "lines_pct=$(cat coverage/coverage-summary.json | jq '.total.lines.pct')" >> $GITHUB_OUTPUT
 
       - name: Update PR Description
         uses: actions/github-script@v6
         with:
           result-encoding: string
           script: |
-            const increase-ratio = 5 - 1;
+            const base-coverage = (
+              ${{ steps.base.outputs.statements_pct }} +
+              ${{ steps.base.outputs.branches_pct }} +
+              ${{ steps.base.outputs.functions_pct }} +
+              ${{ steps.base.outputs.lines_pct }}
+            ) / 4
+            const current-coverage = (
+              ${{ steps.current.outputs.statements_pct }} +
+              ${{ steps.current.outputs.branches_pct }} +
+              ${{ steps.current.outputs.functions_pct }} +
+              ${{ steps.current.outputs.lines_pct }}
+            ) / 4
+            const increase-ratio = current-coverage - base-coverage;
 
             github.rest.pulls.update({
               owner: context.repo.owner,
               repo: context.repo.repo,
               pull_number: context.issue.number,
-              body: '
-                ${{ base-coverage }} -> ${{ current-coverage }}(${{ increase-ratio }}% 상승)\n\n
+              body: `
+                ${ base-coverage } -> ${ current-coverage }(${ increase-ratio }% 상승)\n\n
 
-                수정 전: ${{ base-coverage }}&\n
+                수정 전: ${ base-coverage }&\n
                 ```\n
                 =============================== Coverage summary ===============================\n
                 Statements   : ${{ steps.base.outputs.statements_pct }}% ( ${{ steps.base.outputs.statements_covered }}/${{ steps.base.outputs.statements_total }} )\n
@@ -83,7 +117,7 @@ jobs:
                 ================================================================================\n
                 ```\n\n
 
-                수정 후: ${{ current-coverage }}&\n
+                수정 후: ${ current-coverage }&\n
                 ```\n
                 =============================== Coverage summary ===============================\n
                 Statements   : ${{ steps.current.outputs.statements_pct }}% ( ${{ steps.current.outputs.statements_covered }}/${{ steps.current.outputs.statements_total }} )\n
@@ -92,5 +126,5 @@ jobs:
                 Lines        : ${{ steps.current.outputs.lines_pct }}% ( ${{ steps.current.outputs.lines_covered }}/${{ steps.current.outputs.lines_total }} )\n
                 ================================================================================\n
                 ```\n
-              ',
+              `,
             })
