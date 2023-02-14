@@ -106,8 +106,7 @@ jobs:
               pull_number: context.issue.number,
               body: `
                 ${ base_coverage } -> ${ current_coverage }(${ increase_ratio }% 상승)\n\n
-
-                수정 전: ${ base_coverage }&\n
+                수정 전: ${ base_coverage }%\n
                 \`\`\`\n
                 =============================== Coverage summary ===============================\n
                 Statements   : ${{ steps.base.outputs.statements_pct }}% ( ${{ steps.base.outputs.statements_covered }}/${{ steps.base.outputs.statements_total }} )\n
@@ -116,8 +115,7 @@ jobs:
                 Lines        : ${{ steps.base.outputs.lines_pct }}% ( ${{ steps.base.outputs.lines_covered }}/${{ steps.base.outputs.lines_total }} )\n
                 ================================================================================\n
                 \`\`\`\n\n
-
-                수정 후: ${ current_coverage }&\n
+                수정 후: ${ current_coverage }%\n
                 \`\`\`\n
                 =============================== Coverage summary ===============================\n
                 Statements   : ${{ steps.current.outputs.statements_pct }}% ( ${{ steps.current.outputs.statements_covered }}/${{ steps.current.outputs.statements_total }} )\n
@@ -126,5 +124,5 @@ jobs:
                 Lines        : ${{ steps.current.outputs.lines_pct }}% ( ${{ steps.current.outputs.lines_covered }}/${{ steps.current.outputs.lines_total }} )\n
                 ================================================================================\n
                 \`\`\`\n
-              `,
+              `.trim(),
             })
