@@ -122,5 +122,5 @@ jobs:
                 `Functions    : ${{ steps.current.outputs.functions_pct }}% ( ${{ steps.current.outputs.functions_covered }}/${{ steps.current.outputs.functions_total }} )\n` +
                 `Lines        : ${{ steps.current.outputs.lines_pct }}% ( ${{ steps.current.outputs.lines_covered }}/${{ steps.current.outputs.lines_total }} )\n` +
                 `================================================================================\n` +
-                `\`\`\`,
-            })
+                `\`\`\`
+              })
