@@ -86,12 +86,7 @@ jobs:
         with:
           result-encoding: string
           script: |
-            const base-coverage = (
-              ${{ steps.base.outputs.statements_pct }} +
-              ${{ steps.base.outputs.branches_pct }} +
-              ${{ steps.base.outputs.functions_pct }} +
-              ${{ steps.base.outputs.lines_pct }}
-            ) / 4
+            const base-coverage = 123
             const current-coverage = (
               ${{ steps.current.outputs.statements_pct }} +
               ${{ steps.current.outputs.branches_pct }} +
