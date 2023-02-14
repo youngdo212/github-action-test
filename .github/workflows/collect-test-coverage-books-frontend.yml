@@ -32,8 +32,10 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
 
-      - name: Run Test Code On Current Branch
+      - name: Install Dependencies
         run: yarn install
+
+      - name: Run Test Code On Current Branch
         run: yarn test
 
       - name: Save Current Test Coverage
