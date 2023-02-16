@@ -10,14 +10,14 @@ on:
     branches:
       - main
     paths:
-      - 'src/**'
+      - 'frontends/src/**'
 
 env:
   NODE_VERSION: 18
 
-# defaults:
-#   run:
-#     working-directory: ''
+defaults:
+  run:
+    working-directory: 'frontends/'
 
 jobs:
   collect-test-coverage:
