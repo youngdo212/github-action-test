@@ -1,16 +1,10 @@
 name: 'Collect Test Coverage books-frontend'
 
 on:
-  pull_request:
+  issue_comment:
     types:
-      - opened
-      - labeled
-      - synchronize
-      - reopened
-    branches:
-      - main
-    paths:
-      - 'frontends/src/**'
+      - created
+      - edited
 
 env:
   NODE_VERSION: 18
@@ -22,7 +16,7 @@ defaults:
 jobs:
   collect-test-coverage:
     name: 'Collect Test Coverage'
-    if: startsWith(github.head_ref, 'feature/') && contains(github.event.pull_request.labels.*.name, 'test')
+    if: ${{ github.event.issue.pull_request && contains(github.event.comment.body, '!!books-frontend coverage') }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -100,10 +94,10 @@ jobs:
             ) / 4
             const increase_ratio = current_coverage - base_coverage
 
-            github.rest.pulls.update({
+            github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              pull_number: context.issue.number,
+              issue_number: context.issue.number,
               body: `${ base_coverage }% -> ${ current_coverage }%(**${ increase_ratio }% 상승**)\n\n` + 
                 `수정 전: ${ base_coverage }%\n` + 
                 `\`\`\`\n` + 
