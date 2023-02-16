@@ -29,6 +29,47 @@ jobs:
       - name: Install Dependencies
         run: yarn install
 
+      - name: Run Test Code On Base Branch
+        run: yarn test
+
+      - name: Save Base Test Coverage
+        id: base
+        run: |
+          echo "statements_total=$(cat coverage/coverage-summary.json | jq '.total.statements.total')" >> $GITHUB_OUTPUT
+          echo "statements_covered=$(cat coverage/coverage-summary.json | jq '.total.statements.covered')" >> $GITHUB_OUTPUT
+          echo "statements_pct=$(cat coverage/coverage-summary.json | jq '.total.statements.pct')" >> $GITHUB_OUTPUT
+          echo "branches_total=$(cat coverage/coverage-summary.json | jq '.total.branches.total')" >> $GITHUB_OUTPUT
+          echo "branches_covered=$(cat coverage/coverage-summary.json | jq '.total.branches.covered')" >> $GITHUB_OUTPUT
+          echo "branches_pct=$(cat coverage/coverage-summary.json | jq '.total.branches.pct')" >> $GITHUB_OUTPUT
+          echo "functions_total=$(cat coverage/coverage-summary.json | jq '.total.functions.total')" >> $GITHUB_OUTPUT
+          echo "functions_covered=$(cat coverage/coverage-summary.json | jq '.total.functions.covered')" >> $GITHUB_OUTPUT
+          echo "functions_pct=$(cat coverage/coverage-summary.json | jq '.total.functions.pct')" >> $GITHUB_OUTPUT
+          echo "lines_total=$(cat coverage/coverage-summary.json | jq '.total.lines.total')" >> $GITHUB_OUTPUT
+          echo "lines_covered=$(cat coverage/coverage-summary.json | jq '.total.lines.covered')" >> $GITHUB_OUTPUT
+          echo "lines_pct=$(cat coverage/coverage-summary.json | jq '.total.lines.pct')" >> $GITHUB_OUTPUT
+      
+      - name: Find PR Head
+        uses: actions/github-script@v6
+        id: find-pr
+        with:
+          result-encoding: string
+          script: |
+            const { data } = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number
+            });
+
+            return data.head.ref;
+
+      - name: Checkout Current Branch
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ steps.find-pr.outputs.result }}
+
+      - name: Install Dependencies
+        run: yarn install
+
       - name: Run Test Code On Current Branch
         run: yarn test
 
@@ -48,34 +89,7 @@ jobs:
           echo "lines_covered=$(cat coverage/coverage-summary.json | jq '.total.lines.covered')" >> $GITHUB_OUTPUT
           echo "lines_pct=$(cat coverage/coverage-summary.json | jq '.total.lines.pct')" >> $GITHUB_OUTPUT
 
-      - name: Checkout Base Branch
-        uses: actions/checkout@v3
-        with:
-          ref: ${{ github.base_ref }}
-
-      - name: Install Dependencies
-        run: yarn install
-
-      - name: Run Test Code On Base Branch
-        run: yarn test
-
-      - name: Save Base Test Coverage
-        id: base
-        run: |
-          echo "statements_total=$(cat coverage/coverage-summary.json | jq '.total.statements.total')" >> $GITHUB_OUTPUT
-          echo "statements_covered=$(cat coverage/coverage-summary.json | jq '.total.statements.covered')" >> $GITHUB_OUTPUT
-          echo "statements_pct=$(cat coverage/coverage-summary.json | jq '.total.statements.pct')" >> $GITHUB_OUTPUT
-          echo "branches_total=$(cat coverage/coverage-summary.json | jq '.total.branches.total')" >> $GITHUB_OUTPUT
-          echo "branches_covered=$(cat coverage/coverage-summary.json | jq '.total.branches.covered')" >> $GITHUB_OUTPUT
-          echo "branches_pct=$(cat coverage/coverage-summary.json | jq '.total.branches.pct')" >> $GITHUB_OUTPUT
-          echo "functions_total=$(cat coverage/coverage-summary.json | jq '.total.functions.total')" >> $GITHUB_OUTPUT
-          echo "functions_covered=$(cat coverage/coverage-summary.json | jq '.total.functions.covered')" >> $GITHUB_OUTPUT
-          echo "functions_pct=$(cat coverage/coverage-summary.json | jq '.total.functions.pct')" >> $GITHUB_OUTPUT
-          echo "lines_total=$(cat coverage/coverage-summary.json | jq '.total.lines.total')" >> $GITHUB_OUTPUT
-          echo "lines_covered=$(cat coverage/coverage-summary.json | jq '.total.lines.covered')" >> $GITHUB_OUTPUT
-          echo "lines_pct=$(cat coverage/coverage-summary.json | jq '.total.lines.pct')" >> $GITHUB_OUTPUT
-
-      - name: Update PR Description
+      - name: Create Coverage Comment
         uses: actions/github-script@v6
         with:
           result-encoding: string
