@@ -19,34 +19,10 @@ jobs:
     if: ${{ github.event.issue.pull_request && contains(github.event.comment.body, '!!books-frontend coverage') }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-
       - name: Use Node.js ${{ env.NODE_VERSION }}
         uses: actions/setup-node@v3
         with:
           node-version: ${{ env.NODE_VERSION }}
-
-      - name: Install Dependencies
-        run: yarn install
-
-      - name: Run Test Code On Base Branch
-        run: yarn test --coverage --coverage-reporters=json-summary
-
-      - name: Save Base Test Coverage
-        id: base
-        run: |
-          echo "statements_total=$(cat coverage/coverage-summary.json | jq '.total.statements.total')" >> $GITHUB_OUTPUT
-          echo "statements_covered=$(cat coverage/coverage-summary.json | jq '.total.statements.covered')" >> $GITHUB_OUTPUT
-          echo "statements_pct=$(cat coverage/coverage-summary.json | jq '.total.statements.pct')" >> $GITHUB_OUTPUT
-          echo "branches_total=$(cat coverage/coverage-summary.json | jq '.total.branches.total')" >> $GITHUB_OUTPUT
-          echo "branches_covered=$(cat coverage/coverage-summary.json | jq '.total.branches.covered')" >> $GITHUB_OUTPUT
-          echo "branches_pct=$(cat coverage/coverage-summary.json | jq '.total.branches.pct')" >> $GITHUB_OUTPUT
-          echo "functions_total=$(cat coverage/coverage-summary.json | jq '.total.functions.total')" >> $GITHUB_OUTPUT
-          echo "functions_covered=$(cat coverage/coverage-summary.json | jq '.total.functions.covered')" >> $GITHUB_OUTPUT
-          echo "functions_pct=$(cat coverage/coverage-summary.json | jq '.total.functions.pct')" >> $GITHUB_OUTPUT
-          echo "lines_total=$(cat coverage/coverage-summary.json | jq '.total.lines.total')" >> $GITHUB_OUTPUT
-          echo "lines_covered=$(cat coverage/coverage-summary.json | jq '.total.lines.covered')" >> $GITHUB_OUTPUT
-          echo "lines_pct=$(cat coverage/coverage-summary.json | jq '.total.lines.pct')" >> $GITHUB_OUTPUT
       
       - name: Find PR Head
         uses: actions/github-script@v6
@@ -75,6 +51,51 @@ jobs:
 
       - name: Save Current Test Coverage
         id: current
+        run: |
+          echo "statements_total=$(cat coverage/coverage-summary.json | jq '.total.statements.total')" >> $GITHUB_OUTPUT
+          echo "statements_covered=$(cat coverage/coverage-summary.json | jq '.total.statements.covered')" >> $GITHUB_OUTPUT
+          echo "statements_pct=$(cat coverage/coverage-summary.json | jq '.total.statements.pct')" >> $GITHUB_OUTPUT
+          echo "branches_total=$(cat coverage/coverage-summary.json | jq '.total.branches.total')" >> $GITHUB_OUTPUT
+          echo "branches_covered=$(cat coverage/coverage-summary.json | jq '.total.branches.covered')" >> $GITHUB_OUTPUT
+          echo "branches_pct=$(cat coverage/coverage-summary.json | jq '.total.branches.pct')" >> $GITHUB_OUTPUT
+          echo "functions_total=$(cat coverage/coverage-summary.json | jq '.total.functions.total')" >> $GITHUB_OUTPUT
+          echo "functions_covered=$(cat coverage/coverage-summary.json | jq '.total.functions.covered')" >> $GITHUB_OUTPUT
+          echo "functions_pct=$(cat coverage/coverage-summary.json | jq '.total.functions.pct')" >> $GITHUB_OUTPUT
+          echo "lines_total=$(cat coverage/coverage-summary.json | jq '.total.lines.total')" >> $GITHUB_OUTPUT
+          echo "lines_covered=$(cat coverage/coverage-summary.json | jq '.total.lines.covered')" >> $GITHUB_OUTPUT
+          echo "lines_pct=$(cat coverage/coverage-summary.json | jq '.total.lines.pct')" >> $GITHUB_OUTPUT
+
+      - name: Find PR Base 
+        uses: actions/github-script@v6
+        id: find-base
+        with:
+          result-encoding: string
+          script: |
+            const { data } = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number
+            });
+
+            return data.base.ref;
+      
+      - name: Find Common Ancestor Commit Hash
+        id: find-common-ancestor
+        run: echo "common_ancestor=$(git merge-base {{ steps.find-base.outputs.result }} {{ steps.find-pr.outputs.result }})" >> $GITHUB_OUTPUT
+
+      - name: Checkout Common Ancestor
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ steps.find-common-ancestor.outputs.common_ancestor }}
+
+      - name: Install Dependencies
+        run: yarn install
+
+      - name: Run Test Code On Base Branch
+        run: yarn test --coverage --coverage-reporters=json-summary
+
+      - name: Save Base Test Coverage
+        id: base
         run: |
           echo "statements_total=$(cat coverage/coverage-summary.json | jq '.total.statements.total')" >> $GITHUB_OUTPUT
           echo "statements_covered=$(cat coverage/coverage-summary.json | jq '.total.statements.covered')" >> $GITHUB_OUTPUT
