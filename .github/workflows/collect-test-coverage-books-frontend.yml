@@ -30,7 +30,7 @@ jobs:
         run: yarn install
 
       - name: Run Test Code On Base Branch
-        run: yarn test
+        run: yarn test --coverage --coverage-reporters=json-summary
 
       - name: Save Base Test Coverage
         id: base
@@ -71,7 +71,7 @@ jobs:
         run: yarn install
 
       - name: Run Test Code On Current Branch
-        run: yarn test
+        run: yarn test --coverage --coverage-reporters=json-summary
 
       - name: Save Current Test Coverage
         id: current
