@@ -81,7 +81,7 @@ jobs:
       
       - name: Find Common Ancestor Commit Hash
         id: find-common-ancestor
-        run: echo "common_ancestor=$(git merge-base {{ steps.find-base.outputs.result }} {{ steps.find-pr.outputs.result }})" >> $GITHUB_OUTPUT
+        run: echo "common_ancestor=$(git merge-base ${{ steps.find-base.outputs.result }} ${{ steps.find-pr.outputs.result }})" >> $GITHUB_OUTPUT
 
       - name: Checkout Common Ancestor
         uses: actions/checkout@v3
