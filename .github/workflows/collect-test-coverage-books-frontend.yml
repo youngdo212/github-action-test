@@ -41,6 +41,7 @@ jobs:
       - name: Checkout Current Branch
         uses: actions/checkout@v3
         with:
+          fetch-depth: 0
           ref: ${{ steps.find-pr.outputs.result }}
 
       - name: Install Dependencies
