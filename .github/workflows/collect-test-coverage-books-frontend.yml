@@ -48,11 +48,11 @@ jobs:
         run: yarn install
 
       - name: Run Test Code On Current Branch
-        continue-on-error: true
         run: yarn test --json --outputFile=coverage/tests.json --coverage --coverage-reporters=json-summary
 
       - name: Save Current Test Coverage
         id: current
+        if: success() || failure()
         run: |
           echo "statements_total=$(cat coverage/coverage-summary.json | jq '.total.statements.total')" >> $GITHUB_OUTPUT
           echo "statements_covered=$(cat coverage/coverage-summary.json | jq '.total.statements.covered')" >> $GITHUB_OUTPUT
@@ -103,11 +103,11 @@ jobs:
         run: yarn install
 
       - name: Run Test Code On Base Branch
-        continue-on-error: true
         run: yarn test --json --outputFile=coverage/tests.json --coverage --coverage-reporters=json-summary
 
       - name: Save Base Test Coverage
         id: base
+        if: success() || failure()
         run: |
           echo "statements_total=$(cat coverage/coverage-summary.json | jq '.total.statements.total')" >> $GITHUB_OUTPUT
           echo "statements_covered=$(cat coverage/coverage-summary.json | jq '.total.statements.covered')" >> $GITHUB_OUTPUT
