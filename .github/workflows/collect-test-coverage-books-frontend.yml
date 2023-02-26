@@ -166,7 +166,7 @@ jobs:
                 `Test Suites  : ${{ steps.base.outputs.failed_test_suites }} failed, ${{ steps.base.outputs.pending_test_suites }} skipped, ` +
                 	`${{ steps.base.outputs.passed_test_suites }} passed, ${{ steps.base.outputs.total_test_suites }} total\n` +
                 `Tests        : ${{ steps.base.outputs.failed_tests }} failed, ${{ steps.base.outputs.pending_tests }} skipped, ` +
-                	`${{ steps.base.outputs.todo_tests }} todo, ${{ steps.base.outputs.passed_tests }} passed, ${{ steps.base.outputs.total_tests }} total\n`
+                	`${{ steps.base.outputs.todo_tests }} todo, ${{ steps.base.outputs.passed_tests }} passed, ${{ steps.base.outputs.total_tests }} total\n` +
                 `\`\`\`\n\n` +
                 `수정 후: ${ current_coverage }%\n` +
                 `\`\`\`\n` +
@@ -179,6 +179,6 @@ jobs:
                 `Test Suites  : ${{ steps.current.outputs.failed_test_suites }} failed, ${{ steps.current.outputs.pending_test_suites }} skipped, ` +
                 	`${{ steps.current.outputs.passed_test_suites }} passed, ${{ steps.current.outputs.total_test_suites }} total\n` +
                 `Tests        : ${{ steps.current.outputs.failed_tests }} failed, ${{ steps.current.outputs.pending_tests }} skipped, ` +
-                	`${{ steps.current.outputs.todo_tests }} todo, ${{ steps.current.outputs.passed_tests }} passed, ${{ steps.current.outputs.total_tests }} total\n`
+                	`${{ steps.current.outputs.todo_tests }} todo, ${{ steps.current.outputs.passed_tests }} passed, ${{ steps.current.outputs.total_tests }} total\n` +
                 `\`\`\``
               })
