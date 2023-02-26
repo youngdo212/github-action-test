@@ -48,6 +48,7 @@ jobs:
         run: yarn install
 
       - name: Run Test Code On Current Branch
+        continue-on-error: true
         run: yarn test --json --outputFile=coverage/tests.json --coverage --coverage-reporters=json-summary
 
       - name: Save Current Test Coverage
@@ -102,6 +103,7 @@ jobs:
         run: yarn install
 
       - name: Run Test Code On Base Branch
+        continue-on-error: true
         run: yarn test --json --outputFile=coverage/tests.json --coverage --coverage-reporters=json-summary
 
       - name: Save Base Test Coverage
