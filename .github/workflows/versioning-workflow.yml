@@ -6,6 +6,10 @@ on:
       - created
       - edited
 
+defaults:
+  run:
+    working-directory: 'frontends/'
+
 env:
   NODE_VERSION: 18
 
