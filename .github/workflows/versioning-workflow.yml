@@ -1,0 +1,21 @@
+name: 'Versioning web frontends'
+
+on:
+  issue_comment:
+    types:
+      - created
+      - edited
+
+env:
+  NODE_VERSION: 18
+
+jobs:
+  bump:
+    name: 'Bump Version'
+    if: ${{ contains(github.event.comment.body, '!!books-frontend version') }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Determine Frontend'
+        id: determine-frontend
+        run: |
+          echo test
