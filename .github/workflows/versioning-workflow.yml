@@ -1,6 +1,7 @@
 name: 'Versioning web frontends'
 
 on:
+  workflow_dispatch:
   issue_comment:
     types:
       - created
