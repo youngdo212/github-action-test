@@ -17,7 +17,7 @@ env:
 jobs:
   bump:
     name: 'Bump Version'
-    if: ${{ contains(github.event.comment.body, '!!books-frontend version') }}
+    if: ${{ contains(github.event.comment.body, '!!books-frontend version') || contains(github.event.comment.body, '!!select-frontend version') }}
     runs-on: ubuntu-latest
     steps:
       - name: 'Checkout'
