@@ -26,4 +26,12 @@ jobs:
       - name: 'Determine Frontend'
         id: determine-frontend
         run: |
-          echo test
+          if [[ ${{ contains(github.event.comment.body, '!!books-frontend version') }} ]]; then
+            echo "frontend=ridibooks" >> $GITHUB_OUTPUT
+          elif [[ ${{ contains(github.event.comment.body, '!!select-frontend version') }} ]]; then
+            echo "frontend=select" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: 'Echo Github Env'
+        run: |
+          echo ${{ steps.determine-frontend.outputs.frontend }}
