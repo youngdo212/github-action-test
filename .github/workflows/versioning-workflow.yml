@@ -7,10 +7,6 @@ on:
       - created
       - edited
 
-defaults:
-  run:
-    working-directory: 'frontends/'
-
 env:
   NODE_VERSION: 18
 
@@ -20,9 +16,6 @@ jobs:
     if: ${{ contains(github.event.comment.body, '!!books-frontend version') || contains(github.event.comment.body, '!!select-frontend version') }}
     runs-on: ubuntu-latest
     steps:
-      - name: 'Checkout'
-        uses: actions/checkout@v3
-
       - name: 'Determine Frontend'
         id: determine-frontend
         run: |
@@ -33,5 +26,6 @@ jobs:
           fi
       
       - name: 'Echo Github Env'
+        working-directory: 'frontends/${{ steps.determine-frontend.outputs.frontend }}'
         run: |
-          echo ${{ steps.determine-frontend.outputs.frontend }}
+          echo $(cat package.json | jq -r '.version')
