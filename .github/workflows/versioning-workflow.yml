@@ -16,6 +16,9 @@ jobs:
     if: ${{ contains(github.event.comment.body, '!!books-frontend version') || contains(github.event.comment.body, '!!select-frontend version') }}
     runs-on: ubuntu-latest
     steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v3
+
       - name: 'Determine Frontend'
         id: determine-frontend
         run: |
