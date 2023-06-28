@@ -29,6 +29,10 @@ jobs:
           fi
       
       - name: 'Echo Github Env'
+        env:
+          ISSUE_COMMENT: ${{ github.event.comment.body }}
         working-directory: 'frontends/${{ steps.determine-frontend.outputs.frontend }}'
         run: |
           echo $(cat package.json | jq -r '.version')
+          VERSION_TYPE=$(echo "$ISSUE_COMMENT" | sed 's/!!${{ steps.determine-frontend.outputs.frontend == 'ridibooks' && 'books-frontend' || 'select-frontend' }} version //')
+          echo "$VERSION_TYPE"
