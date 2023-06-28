@@ -1,4 +1,4 @@
 function addHello(a) {
-    return a + 'hello';
+    return a + ' hello';
 }
 module.exports = addHello;
